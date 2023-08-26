@@ -28,7 +28,7 @@ async def udpFetch():
 
 asyncio.run(udpFetch())
 ```
-![UDP Decoding]()
+![UDP Decoding](https://github.com/cameronpovey/UDP_Packets/blob/main/images/decode_udp.png?raw=true)
 
 ## Compute Checksum - Task 2
 To confirm the check sum of the recieved packet a `compute_checksum(source_port: int, dest_port: int, payload: bytearray) -> int` function is created. To figure out the total sum of the packet we will recieve we first need to define an empty `bytearray()` variable, after this the total size is defiend by adding 8 onto the length of the previously assigned payload. The Size, Source and Destination is then converted to bytes and added to the byte array along with the payload. If the size of the packet is an odd number an empty byte is added onto the end `packet += b'\x00'`. Then, in pars, values are combined, the first value being shifted 8bits to form a 16bit value. With this we can add the lowest 16 bits and the highest together to account for any overflow that may have occured with `(pairs & 0xFFFF) + (pairs >> 16)` we then figure out the one's complement to return the calculated checksum `return(~pairs & 0xFFFF)`.
@@ -37,7 +37,7 @@ To confirm the check sum of the recieved packet a `compute_checksum(source_port:
 ``` python
 compute_checksum(10, 25, "Welcome to the IoT UDP Server")
 ```
-![compute_checksum]()
+![compute_checksum](https://github.com/cameronpovey/UDP_Packets/blob/main/images/compute_checksum.png?raw=true)
 
 ## Time UDP - Task 3
 To complete Task 3, I started by defining a connection and decoding the response to get the initial welcome message, within the `recv_and_decode_packet` function I call the decode function that was created previously to seperate the data and call the `compute_checksum` function. After this the original function to get the time uses a while loop where the `send_packet(websocket, source: int, dest: int, payload)` function is called which is used the send the packet with the revelevent information in, using the `compute_checksum` for the checksum and using the values passed and converting them into bytes with `foo.to_bytes(2, byteorder="litte")` after all of these being encoded we can send the message to the server. Once recieved the same process is used to decode the orginal message to process the message recieved.
@@ -58,7 +58,7 @@ async def send_UDP():
             
             time.sleep(10)
 ```
-![compute_checksum]()
+![compute_checksum](https://github.com/cameronpovey/UDP_Packets/blob/main/images/send_udp.png?raw=true)
 
 # How to run
 This git comes with two files, a test file and the main morse.py where the morse code takes place. This codes only requirements is a valid version of python, preferably python 3.
